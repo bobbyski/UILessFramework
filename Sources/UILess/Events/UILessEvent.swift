@@ -1,7 +1,7 @@
 import Foundation
 
 /// A platform-independent event that can move between platform adapters and the core runtime.
-public struct UILessEvent: Codable, Equatable, Identifiable, Sendable {
+public struct UILessEvent: Codable, Equatable, Identifiable, UILessObject {
     /// Stable identity for this event.
     public var id: EventID
 
@@ -53,7 +53,7 @@ public struct UILessEvent: Codable, Equatable, Identifiable, Sendable {
 }
 
 /// Typed payload carried by a `UILessEvent`.
-public enum EventPayload: Codable, Equatable, Sendable {
+public enum EventPayload: Codable, Equatable, UILessObject {
     /// Event has no structured payload.
     case none
 
@@ -86,7 +86,7 @@ public enum EventPayload: Codable, Equatable, Sendable {
 }
 
 /// Application lifecycle events understood by the core.
-public enum LifecycleEvent: String, Codable, Equatable, Sendable {
+public enum LifecycleEvent: String, Codable, Equatable, UILessObject {
     /// Application is launching.
     case launch
 
@@ -104,7 +104,7 @@ public enum LifecycleEvent: String, Codable, Equatable, Sendable {
 }
 
 /// Platform-independent keyboard event.
-public struct KeyboardEvent: Codable, Equatable, Sendable {
+public struct KeyboardEvent: Codable, Equatable, UILessObject {
     /// Key name or character in platform-normalized form.
     public var key: String
 
@@ -128,7 +128,7 @@ public struct KeyboardEvent: Codable, Equatable, Sendable {
 }
 
 /// Platform-independent pointer event.
-public struct PointerEvent: Codable, Equatable, Sendable {
+public struct PointerEvent: Codable, Equatable, UILessObject {
     /// Location in the platform adapter's current coordinate space.
     public var location: EventPoint
 
@@ -162,7 +162,7 @@ public struct PointerEvent: Codable, Equatable, Sendable {
 }
 
 /// Focus state change for an event target.
-public struct FocusEvent: Codable, Equatable, Sendable {
+public struct FocusEvent: Codable, Equatable, UILessObject {
     /// Whether the target gained focus.
     public var focused: Bool
 
@@ -175,7 +175,7 @@ public struct FocusEvent: Codable, Equatable, Sendable {
 }
 
 /// Command activation event.
-public struct CommandEvent: Codable, Equatable, Sendable {
+public struct CommandEvent: Codable, Equatable, UILessObject {
     /// Stable command name.
     public var command: String
 
@@ -188,7 +188,7 @@ public struct CommandEvent: Codable, Equatable, Sendable {
 }
 
 /// Value change event for a resource.
-public struct ValueChangedEvent: Codable, Equatable, Sendable {
+public struct ValueChangedEvent: Codable, Equatable, UILessObject {
     /// New platform-independent value.
     public var value: EventValue
 
@@ -201,7 +201,7 @@ public struct ValueChangedEvent: Codable, Equatable, Sendable {
 }
 
 /// Selection change event for list-like resources.
-public struct SelectionChangedEvent: Codable, Equatable, Sendable {
+public struct SelectionChangedEvent: Codable, Equatable, UILessObject {
     /// Stable selected item identifiers.
     public var selectedIDs: [String]
 
@@ -214,7 +214,7 @@ public struct SelectionChangedEvent: Codable, Equatable, Sendable {
 }
 
 /// Navigation event from one step to another.
-public struct NavigationEvent: Codable, Equatable, Sendable {
+public struct NavigationEvent: Codable, Equatable, UILessObject {
     /// Destination step.
     public var destination: StepID
 
@@ -227,7 +227,7 @@ public struct NavigationEvent: Codable, Equatable, Sendable {
 }
 
 /// Two-dimensional integer point for platform-independent events.
-public struct EventPoint: Codable, Equatable, Sendable {
+public struct EventPoint: Codable, Equatable, UILessObject {
     /// Horizontal coordinate.
     public var x: Int
 
@@ -246,7 +246,7 @@ public struct EventPoint: Codable, Equatable, Sendable {
 }
 
 /// Platform-independent scalar value for event payloads.
-public enum EventValue: Codable, Equatable, Sendable {
+public enum EventValue: Codable, Equatable, UILessObject {
     /// String value.
     case string(String)
 
@@ -267,7 +267,7 @@ public enum EventValue: Codable, Equatable, Sendable {
 }
 
 /// Phase of an input event.
-public enum InputPhase: String, Codable, Equatable, Sendable {
+public enum InputPhase: String, Codable, Equatable, UILessObject {
     /// Input began.
     case began
 
@@ -288,7 +288,7 @@ public enum InputPhase: String, Codable, Equatable, Sendable {
 }
 
 /// Platform-independent pointer button.
-public enum PointerButton: String, Codable, Equatable, Sendable {
+public enum PointerButton: String, Codable, Equatable, UILessObject {
     /// Primary pointer button.
     case primary
 
@@ -303,7 +303,7 @@ public enum PointerButton: String, Codable, Equatable, Sendable {
 }
 
 /// Keyboard or input modifiers attached to an event.
-public struct EventModifiers: OptionSet, Codable, Equatable, Sendable {
+public struct EventModifiers: OptionSet, Codable, Equatable, UILessObject {
     /// Raw bitset value for the modifiers.
     public let rawValue: Int
 

@@ -2,7 +2,7 @@
 ///
 /// Each platform support framework should provide one or more bridges so the
 /// core runtime never needs to import platform-specific UI or input libraries.
-public protocol PlatformEventBridge: Sendable {
+public protocol PlatformEventBridge: UILessObject {
     /// Native event type used by the platform framework.
     associatedtype NativeEvent: Sendable
 
@@ -25,7 +25,7 @@ public protocol PlatformEventBridge: Sendable {
 }
 
 /// Receives core UILess events from a platform event source.
-public protocol PlatformEventSink: Sendable {
+public protocol PlatformEventSink: UILessObject {
     /// Receives one platform-independent event.
     ///
     /// - Parameter event: Event received from a platform source.
@@ -34,7 +34,7 @@ public protocol PlatformEventSink: Sendable {
 }
 
 /// Platform object capable of forwarding native events into a UILess sink.
-public protocol PlatformEventSource: Sendable {
+public protocol PlatformEventSource: UILessObject {
     /// Native event type used by the event source.
     associatedtype NativeEvent: Sendable
 
@@ -52,7 +52,7 @@ public protocol PlatformEventSource: Sendable {
 }
 
 /// Errors produced by a platform event bridge.
-public enum EventBridgeError: Error, Equatable, Sendable {
+public enum EventBridgeError: Error, Equatable, UILessObject {
     /// The bridge cannot represent the native event.
     case unsupportedNativeEvent(String)
 

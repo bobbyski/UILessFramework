@@ -1,7 +1,7 @@
 import Foundation
 
 /// One structured log entry emitted by a logger.
-public struct LogRecord: Codable, Equatable, Identifiable, Sendable {
+public struct LogRecord: Codable, Equatable, Identifiable, UILessObject {
     /// Stable identity for the log record.
     public var id: UUID
 
@@ -59,7 +59,7 @@ public struct LogRecord: Codable, Equatable, Identifiable, Sendable {
 }
 
 /// Source-code location for a log record.
-public struct LogSource: Codable, Equatable, Sendable {
+public struct LogSource: Codable, Equatable, UILessObject {
     /// Compiler-provided file identifier.
     public var fileID: String
 

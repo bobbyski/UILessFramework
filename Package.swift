@@ -13,6 +13,10 @@ let package = Package(
             name: "UILess",
             targets: ["UILess"]
         ),
+        .library(
+            name: "UILessMacTUI",
+            targets: ["UILessMacTUI"]
+        ),
         .executable(
             name: "UILessApplication",
             targets: ["UILessApplication"]
@@ -22,9 +26,13 @@ let package = Package(
         .target(
             name: "UILess"
         ),
+        .target(
+            name: "UILessMacTUI",
+            dependencies: ["UILess"]
+        ),
         .executableTarget(
             name: "UILessApplication",
-            dependencies: ["UILess"]
+            dependencies: ["UILess", "UILessMacTUI"]
         ),
         .testTarget(
             name: "UILessTests",

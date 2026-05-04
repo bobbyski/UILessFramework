@@ -1,5 +1,5 @@
 /// Severity or purpose level for a log record.
-public enum LogLevel: Int, Codable, CaseIterable, Comparable, Sendable {
+public enum LogLevel: Int, Codable, CaseIterable, Comparable, UILessObject {
     /// Very detailed diagnostic information.
     case trace = 0
 

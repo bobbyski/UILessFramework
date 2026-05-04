@@ -1,5 +1,5 @@
 /// Platform-independent target for an event.
-public enum EventTarget: Codable, Equatable, Sendable {
+public enum EventTarget: Codable, Equatable, UILessObject {
     /// Event targets the application as a whole.
     case application(ApplicationID)
 

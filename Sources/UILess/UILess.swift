@@ -2,7 +2,7 @@
 ///
 /// Platform targets wrap one `UILessApplication` and render its flows through a
 /// platform support framework such as a TUI, macOS GUI, iOS app, or audio target.
-public protocol UILessApplication: Sendable {
+public protocol UILessApplication: UILessObject {
     /// Stable identity for this application.
     var id: ApplicationID { get }
 
@@ -17,7 +17,7 @@ public protocol UILessApplication: Sendable {
 }
 
 /// Stable identity for a UILess application.
-public struct ApplicationID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
+public struct ApplicationID: Hashable, Codable, ExpressibleByStringLiteral, UILessObject {
     /// The underlying stable identifier value.
     public let rawValue: String
 
@@ -37,7 +37,7 @@ public struct ApplicationID: Hashable, Codable, Sendable, ExpressibleByStringLit
 }
 
 /// Stable identity for a flow.
-public struct FlowID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
+public struct FlowID: Hashable, Codable, ExpressibleByStringLiteral, UILessObject {
     /// The underlying stable identifier value.
     public let rawValue: String
 
@@ -57,7 +57,7 @@ public struct FlowID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
 }
 
 /// Stable identity for a step within a flow.
-public struct StepID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
+public struct StepID: Hashable, Codable, ExpressibleByStringLiteral, UILessObject {
     /// The underlying stable identifier value.
     public let rawValue: String
 
@@ -77,7 +77,7 @@ public struct StepID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
 }
 
 /// Stable identity for a resource request.
-public struct ResourceID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
+public struct ResourceID: Hashable, Codable, ExpressibleByStringLiteral, UILessObject {
     /// The underlying stable identifier value.
     public let rawValue: String
 
@@ -97,7 +97,7 @@ public struct ResourceID: Hashable, Codable, Sendable, ExpressibleByStringLitera
 }
 
 /// A platform-independent description of user progression through work.
-public struct Flow: Codable, Equatable, Sendable {
+public struct Flow: Codable, Equatable, UILessObject {
     /// Stable identity for the flow.
     public var id: FlowID
 
@@ -121,7 +121,7 @@ public struct Flow: Codable, Equatable, Sendable {
 }
 
 /// One meaningful step in a flow.
-public struct FlowStep: Codable, Equatable, Sendable {
+public struct FlowStep: Codable, Equatable, UILessObject {
     /// Stable identity for the step.
     public var id: StepID
 
@@ -161,7 +161,7 @@ public struct FlowStep: Codable, Equatable, Sendable {
 }
 
 /// Semantic role for a flow step.
-public enum StepRole: String, Codable, Equatable, Sendable {
+public enum StepRole: String, Codable, Equatable, UILessObject {
     /// The step gathers information from the user or platform.
     case gatherInput
 
@@ -179,7 +179,7 @@ public enum StepRole: String, Codable, Equatable, Sendable {
 }
 
 /// A platform-independent request for something a step needs.
-public struct ResourceRequest: Codable, Equatable, Sendable {
+public struct ResourceRequest: Codable, Equatable, UILessObject {
     /// Stable identity for the requested resource.
     public var id: ResourceID
 
@@ -203,7 +203,7 @@ public struct ResourceRequest: Codable, Equatable, Sendable {
 }
 
 /// Broad resource kinds the core can ask platforms to represent.
-public enum ResourceKind: String, Codable, Equatable, Sendable {
+public enum ResourceKind: String, Codable, Equatable, UILessObject {
     /// Textual content or input.
     case text
 
@@ -221,7 +221,7 @@ public enum ResourceKind: String, Codable, Equatable, Sendable {
 }
 
 /// A possible move from one step to another.
-public struct FlowTransition: Codable, Equatable, Sendable {
+public struct FlowTransition: Codable, Equatable, UILessObject {
     /// Human-readable transition title.
     public var title: String
 
@@ -240,7 +240,7 @@ public struct FlowTransition: Codable, Equatable, Sendable {
 }
 
 /// The current platform-independent state a platform target can render.
-public struct ApplicationSnapshot: Codable, Equatable, Sendable {
+public struct ApplicationSnapshot: Codable, Equatable, UILessObject {
     /// Identity of the application that produced this snapshot.
     public var applicationID: ApplicationID
 
@@ -264,7 +264,7 @@ public struct ApplicationSnapshot: Codable, Equatable, Sendable {
 }
 
 /// Runtime capability that can start a UILess application.
-public protocol UILessRuntimeProtocol: Sendable {
+public protocol UILessRuntimeProtocol: UILessObject {
     /// Starts the application and returns the first renderable snapshot.
     ///
     /// - Returns: The first platform-independent snapshot.
@@ -273,14 +273,14 @@ public protocol UILessRuntimeProtocol: Sendable {
 }
 
 /// Minimal runtime coordinator for a UILess application.
-public struct UILessRuntime<Application: UILessApplication>: UILessRuntimeProtocol {
+public struct UILessRuntime: UILessRuntimeProtocol {
     /// The application definition being run.
-    public var application: Application
+    public var application: any UILessApplication
 
     /// Creates a runtime for an application.
     ///
     /// - Parameter application: Application definition to run.
-    public init(application: Application) {
+    public init(application: any UILessApplication) {
         self.application = application
     }
 

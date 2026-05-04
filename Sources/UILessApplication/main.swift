@@ -1,11 +1,16 @@
 import Foundation
 import UILess
+import UILessMacTUI
 
 @main
 struct Main {
     static func main() async throws {
-        let runtime = UILessRuntime(application: StarterApplication())
-        let snapshot = try await runtime.start()
+        let dependencies = UILessDependencyContainer()
+        await dependencies.register((any UILessApplication).self, value: StarterApplication())
+        await dependencies.register((any UILessPlatformProvider).self, value: MacTUIPlatformProvider())
+
+        let startup = UILessStartup(dependencies: dependencies)
+        let snapshot = try await startup.start()
         let data = try JSONEncoder.uilessPrettyPrinted.encode(snapshot)
 
         FileHandle.standardOutput.write(data)

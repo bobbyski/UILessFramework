@@ -1,7 +1,7 @@
 import Foundation
 
 /// A destination that can receive log records.
-public protocol LogDestination: Sendable {
+public protocol LogDestination: UILessObject {
     /// Writes one log record.
     ///
     /// - Parameter record: Record to write to the destination.
@@ -9,7 +9,7 @@ public protocol LogDestination: Sendable {
 }
 
 /// A filtered route from a logger to one destination.
-public struct LogRoute: Sendable {
+public struct LogRoute: UILessObject {
     /// Minimum level this route accepts.
     public var minimumLevel: LogLevel
 
@@ -128,7 +128,7 @@ public actor MemoryLogDestination: LogDestination {
 }
 
 /// Formats a log record into text.
-public struct LogRecordFormatter: Sendable {
+public struct LogRecordFormatter: UILessObject {
     private let formatter: @Sendable (LogRecord) -> String
 
     /// Creates a formatter from a closure.

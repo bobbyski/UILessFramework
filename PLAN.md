@@ -88,12 +88,16 @@ clearer.
 - [x] Add the first smoke test target.
 - [x] Add core logging primitives with routed destinations.
 - [x] Add core event primitives and platform event bridge protocols.
+- [x] Add typed dependency injection container.
+- [x] Add platform provider startup boundary.
+- [x] Add initial macOS TUI framework target.
 
 ## Core Framework Checklist
 
 - [x] Define initial application, flow, step, resource, transition, snapshot, and runtime primitives.
 - [x] Define initial logging framework.
 - [x] Define initial platform-independent event framework.
+- [x] Define initial dependency injection and startup framework.
 - [ ] Refine terminology against the research documents.
 - [ ] Decide what belongs in the core versus future adapter frameworks.
 - [ ] Define the event model for user intent and system-driven changes.

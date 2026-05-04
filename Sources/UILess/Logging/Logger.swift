@@ -6,7 +6,7 @@ import Foundation
 /// destinations to perform asynchronous work. Use `Logger.shared` for default
 /// framework logging, or create isolated instances in tests and platform
 /// adapters.
-public actor Logger {
+public actor Logger: UILessObject {
     /// Shared process-wide logger.
     public static let shared = Logger()
 

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Stable identity for an event.
-public struct EventID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
+public struct EventID: Hashable, Codable, ExpressibleByStringLiteral, UILessObject {
     /// The underlying stable identifier value.
     public let rawValue: String
 
@@ -23,7 +23,7 @@ public struct EventID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
 }
 
 /// Stable identity for a platform or platform adapter.
-public struct PlatformID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
+public struct PlatformID: Hashable, Codable, ExpressibleByStringLiteral, UILessObject {
     /// The underlying stable identifier value.
     public let rawValue: String
 
@@ -43,7 +43,7 @@ public struct PlatformID: Hashable, Codable, Sendable, ExpressibleByStringLitera
 }
 
 /// Stable semantic type for a UILess event.
-public struct EventType: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
+public struct EventType: Hashable, Codable, ExpressibleByStringLiteral, UILessObject {
     /// The underlying stable event type value.
     public let rawValue: String
 
