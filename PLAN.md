@@ -121,6 +121,9 @@ clearer.
 
 - [x] Add initial package README.
 - [x] Add this planning checklist.
+- [x] Add documentation comments to the initial public API surface.
+- [ ] Maintain documentation comments for all public and framework-facing APIs.
+- [ ] Add internal comments for unusual, complex, or non-obvious implementation details.
 - [ ] Summarize architecture ideas from the `Documents` folder.
 - [ ] Write glossary for core UILess terms.
 - [ ] Document package and future framework boundaries.
