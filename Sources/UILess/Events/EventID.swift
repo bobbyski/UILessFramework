@@ -8,11 +8,15 @@ public struct EventID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
     /// Creates an event identity.
     ///
     /// If no value is provided, a UUID string is generated.
+    ///
+    /// - Parameter rawValue: Stable string value for the identity.
     public init(_ rawValue: String = UUID().uuidString) {
         self.rawValue = rawValue
     }
 
     /// Creates an event identity from a string literal.
+    ///
+    /// - Parameter value: Stable string value for the identity.
     public init(stringLiteral value: String) {
         self.init(value)
     }
@@ -24,11 +28,15 @@ public struct PlatformID: Hashable, Codable, Sendable, ExpressibleByStringLitera
     public let rawValue: String
 
     /// Creates a platform identity.
+    ///
+    /// - Parameter rawValue: Stable string value for the platform identity.
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
 
     /// Creates a platform identity from a string literal.
+    ///
+    /// - Parameter value: Stable string value for the platform identity.
     public init(stringLiteral value: String) {
         self.init(value)
     }
@@ -40,11 +48,15 @@ public struct EventType: Hashable, Codable, Sendable, ExpressibleByStringLiteral
     public let rawValue: String
 
     /// Creates an event type.
+    ///
+    /// - Parameter rawValue: Stable string value for the event type.
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
 
     /// Creates an event type from a string literal.
+    ///
+    /// - Parameter value: Stable string value for the event type.
     public init(stringLiteral value: String) {
         self.init(value)
     }

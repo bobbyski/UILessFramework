@@ -3,6 +3,8 @@ import Foundation
 /// A destination that can receive log records.
 public protocol LogDestination: Sendable {
     /// Writes one log record.
+    ///
+    /// - Parameter record: Record to write to the destination.
     func write(_ record: LogRecord) async
 }
 
@@ -18,6 +20,11 @@ public struct LogRoute: Sendable {
     public var destination: any LogDestination
 
     /// Creates a route to a log destination.
+    ///
+    /// - Parameters:
+    ///   - minimumLevel: Minimum level this route accepts.
+    ///   - acceptedCategories: Accepted categories, or `nil` to accept all categories.
+    ///   - destination: Destination for accepted records.
     public init(
         minimumLevel: LogLevel = .trace,
         acceptedCategories: Set<String>? = nil,
@@ -29,6 +36,9 @@ public struct LogRoute: Sendable {
     }
 
     /// Returns whether this route accepts a record.
+    ///
+    /// - Parameter record: Record to evaluate.
+    /// - Returns: `true` when this route should receive the record.
     public func accepts(_ record: LogRecord) -> Bool {
         guard minimumLevel != .off, record.level.isLoggable, record.level >= minimumLevel else {
             return false
@@ -51,11 +61,15 @@ public struct ClosureLogDestination: LogDestination {
     private let writer: @Sendable (LogRecord) async -> Void
 
     /// Creates a closure destination.
+    ///
+    /// - Parameter writer: Async closure invoked for each accepted record.
     public init(writer: @escaping @Sendable (LogRecord) async -> Void) {
         self.writer = writer
     }
 
     /// Writes one record by invoking the closure.
+    ///
+    /// - Parameter record: Record to write.
     public func write(_ record: LogRecord) async {
         await writer(record)
     }
@@ -67,11 +81,15 @@ public struct ConsoleLogDestination: LogDestination {
     public var formatter: LogRecordFormatter
 
     /// Creates a console destination.
+    ///
+    /// - Parameter formatter: Formatter used to turn records into text.
     public init(formatter: LogRecordFormatter = .standard) {
         self.formatter = formatter
     }
 
     /// Writes one formatted record with `print`.
+    ///
+    /// - Parameter record: Record to write.
     public func write(_ record: LogRecord) async {
         print(formatter.format(record))
     }
@@ -86,11 +104,15 @@ public actor MemoryLogDestination: LogDestination {
     public var maximumRecordCount: Int
 
     /// Creates an in-memory destination.
+    ///
+    /// - Parameter maximumRecordCount: Maximum number of records retained.
     public init(maximumRecordCount: Int = 200) {
         self.maximumRecordCount = maximumRecordCount
     }
 
     /// Stores one record, trimming older records when needed.
+    ///
+    /// - Parameter record: Record to store.
     public func write(_ record: LogRecord) {
         records.append(record)
 
@@ -110,11 +132,16 @@ public struct LogRecordFormatter: Sendable {
     private let formatter: @Sendable (LogRecord) -> String
 
     /// Creates a formatter from a closure.
+    ///
+    /// - Parameter formatter: Closure that converts a record to text.
     public init(formatter: @escaping @Sendable (LogRecord) -> String) {
         self.formatter = formatter
     }
 
     /// Formats one log record.
+    ///
+    /// - Parameter record: Record to format.
+    /// - Returns: Text representation of the record.
     public func format(_ record: LogRecord) -> String {
         formatter(record)
     }

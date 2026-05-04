@@ -27,6 +27,16 @@ public struct LogRecord: Codable, Equatable, Identifiable, Sendable {
     public var source: LogSource
 
     /// Creates a log record.
+    ///
+    /// - Parameters:
+    ///   - id: Stable identity for the log record.
+    ///   - timestamp: Time when the log record was created.
+    ///   - level: Severity or purpose level.
+    ///   - subsystem: Optional subsystem, such as `UILess.Runtime`.
+    ///   - category: Optional category within the subsystem.
+    ///   - message: Human-readable log message.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - source: Source location where the record was emitted.
     public init(
         id: UUID = UUID(),
         timestamp: Date = Date(),
@@ -60,6 +70,11 @@ public struct LogSource: Codable, Equatable, Sendable {
     public var line: Int
 
     /// Creates a source location.
+    ///
+    /// - Parameters:
+    ///   - fileID: Compiler-provided file identifier.
+    ///   - function: Compiler-provided function name.
+    ///   - line: Compiler-provided line number.
     public init(fileID: String, function: String, line: Int) {
         self.fileID = fileID
         self.function = function

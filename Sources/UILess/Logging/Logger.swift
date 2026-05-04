@@ -23,6 +23,12 @@ public actor Logger {
     public var defaultSubsystem: String?
 
     /// Creates a logger.
+    ///
+    /// - Parameters:
+    ///   - minimumLevel: Global minimum level accepted by the logger.
+    ///   - messageMaximumLength: Maximum number of characters retained per message.
+    ///   - defaultSubsystem: Default subsystem attached when a log call omits one.
+    ///   - routes: Destination routes that receive accepted records.
     public init(
         minimumLevel: LogLevel = .info,
         messageMaximumLength: Int = 12 * 1024,
@@ -36,6 +42,8 @@ public actor Logger {
     }
 
     /// Adds a destination route.
+    ///
+    /// - Parameter route: Route to add.
     public func addRoute(_ route: LogRoute) {
         routes.append(route)
     }
@@ -46,16 +54,30 @@ public actor Logger {
     }
 
     /// Replaces all destination routes.
+    ///
+    /// - Parameter routes: New route list.
     public func replaceRoutes(with routes: [LogRoute]) {
         self.routes = routes
     }
 
     /// Updates the global minimum log level.
+    ///
+    /// - Parameter level: New global minimum level.
     public func setMinimumLevel(_ level: LogLevel) {
         minimumLevel = level
     }
 
     /// Emits a log message.
+    ///
+    /// - Parameters:
+    ///   - message: Human-readable message to emit.
+    ///   - level: Severity or purpose level for the record.
+    ///   - subsystem: Optional subsystem override for this record.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func log(
         _ message: String,
         level: LogLevel = .info,
@@ -87,6 +109,14 @@ public actor Logger {
     }
 
     /// Emits a trace message.
+    ///
+    /// - Parameters:
+    ///   - message: Human-readable message to emit.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func trace(
         _ message: String,
         category: String? = nil,
@@ -99,6 +129,14 @@ public actor Logger {
     }
 
     /// Emits a debug message.
+    ///
+    /// - Parameters:
+    ///   - message: Human-readable message to emit.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func debug(
         _ message: String,
         category: String? = nil,
@@ -111,6 +149,14 @@ public actor Logger {
     }
 
     /// Emits an informational message.
+    ///
+    /// - Parameters:
+    ///   - message: Human-readable message to emit.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func info(
         _ message: String,
         category: String? = nil,
@@ -123,6 +169,14 @@ public actor Logger {
     }
 
     /// Emits a warning message.
+    ///
+    /// - Parameters:
+    ///   - message: Human-readable message to emit.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func warning(
         _ message: String,
         category: String? = nil,
@@ -135,6 +189,14 @@ public actor Logger {
     }
 
     /// Emits an error message.
+    ///
+    /// - Parameters:
+    ///   - message: Human-readable message to emit.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func error(
         _ message: String,
         category: String? = nil,
@@ -147,6 +209,14 @@ public actor Logger {
     }
 
     /// Emits an error by stringifying an `Error`.
+    ///
+    /// - Parameters:
+    ///   - error: Error to describe and emit.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func error(
         _ error: any Error,
         category: String? = nil,
@@ -159,6 +229,15 @@ public actor Logger {
     }
 
     /// Emits a command and, optionally, its result.
+    ///
+    /// - Parameters:
+    ///   - command: Command text or stable command name.
+    ///   - result: Optional command result emitted as a separate result record.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func command(
         _ command: String,
         result: String? = nil,
@@ -176,6 +255,15 @@ public actor Logger {
     }
 
     /// Emits data as UTF-8 text when possible, otherwise as a hex dump.
+    ///
+    /// - Parameters:
+    ///   - data: Data to emit.
+    ///   - message: Optional heading prepended before the data representation.
+    ///   - category: Optional category for routing and filtering.
+    ///   - metadata: Low-volume structured metadata.
+    ///   - fileID: Source file identifier. Defaults to the caller's `#fileID`.
+    ///   - function: Source function. Defaults to the caller's `#function`.
+    ///   - line: Source line. Defaults to the caller's `#line`.
     public func data(
         _ data: Data,
         message: String? = nil,

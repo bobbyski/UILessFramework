@@ -10,6 +10,9 @@ public protocol UILessApplication: Sendable {
     var displayName: String { get }
 
     /// Creates the first flow the runtime should present when the app starts.
+    ///
+    /// - Returns: The initial platform-independent flow.
+    /// - Throws: Any error that prevents the application from producing its initial flow.
     func initialFlow() async throws -> Flow
 }
 
@@ -19,11 +22,15 @@ public struct ApplicationID: Hashable, Codable, Sendable, ExpressibleByStringLit
     public let rawValue: String
 
     /// Creates an application identity.
+    ///
+    /// - Parameter rawValue: Stable string value for the identity.
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
 
     /// Creates an application identity from a string literal.
+    ///
+    /// - Parameter value: Stable string value for the identity.
     public init(stringLiteral value: String) {
         self.init(value)
     }
@@ -35,11 +42,15 @@ public struct FlowID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
     public let rawValue: String
 
     /// Creates a flow identity.
+    ///
+    /// - Parameter rawValue: Stable string value for the identity.
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
 
     /// Creates a flow identity from a string literal.
+    ///
+    /// - Parameter value: Stable string value for the identity.
     public init(stringLiteral value: String) {
         self.init(value)
     }
@@ -51,11 +62,15 @@ public struct StepID: Hashable, Codable, Sendable, ExpressibleByStringLiteral {
     public let rawValue: String
 
     /// Creates a step identity.
+    ///
+    /// - Parameter rawValue: Stable string value for the identity.
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
 
     /// Creates a step identity from a string literal.
+    ///
+    /// - Parameter value: Stable string value for the identity.
     public init(stringLiteral value: String) {
         self.init(value)
     }
@@ -67,11 +82,15 @@ public struct ResourceID: Hashable, Codable, Sendable, ExpressibleByStringLitera
     public let rawValue: String
 
     /// Creates a resource identity.
+    ///
+    /// - Parameter rawValue: Stable string value for the identity.
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
 
     /// Creates a resource identity from a string literal.
+    ///
+    /// - Parameter value: Stable string value for the identity.
     public init(stringLiteral value: String) {
         self.init(value)
     }
@@ -89,6 +108,11 @@ public struct Flow: Codable, Equatable, Sendable {
     public var steps: [FlowStep]
 
     /// Creates a flow.
+    ///
+    /// - Parameters:
+    ///   - id: Stable identity for the flow.
+    ///   - title: Human-readable title for the flow.
+    ///   - steps: Ordered steps that make up the flow.
     public init(id: FlowID, title: String, steps: [FlowStep]) {
         self.id = id
         self.title = title
@@ -114,6 +138,13 @@ public struct FlowStep: Codable, Equatable, Sendable {
     public var transitions: [FlowTransition]
 
     /// Creates a flow step.
+    ///
+    /// - Parameters:
+    ///   - id: Stable identity for the step.
+    ///   - title: Human-readable title for the step.
+    ///   - role: Semantic role the step plays in the flow.
+    ///   - resources: Abstract resources this step needs.
+    ///   - transitions: Available transitions from this step.
     public init(
         id: StepID,
         title: String,
@@ -159,6 +190,11 @@ public struct ResourceRequest: Codable, Equatable, Sendable {
     public var purpose: String
 
     /// Creates a resource request.
+    ///
+    /// - Parameters:
+    ///   - id: Stable identity for the requested resource.
+    ///   - kind: Broad kind of resource being requested.
+    ///   - purpose: Human-readable explanation of why the resource is needed.
     public init(id: ResourceID, kind: ResourceKind, purpose: String) {
         self.id = id
         self.kind = kind
@@ -193,6 +229,10 @@ public struct FlowTransition: Codable, Equatable, Sendable {
     public var destination: StepID
 
     /// Creates a flow transition.
+    ///
+    /// - Parameters:
+    ///   - title: Human-readable title for the transition.
+    ///   - destination: Destination step for the transition.
     public init(title: String, destination: StepID) {
         self.title = title
         self.destination = destination
@@ -211,6 +251,11 @@ public struct ApplicationSnapshot: Codable, Equatable, Sendable {
     public var currentFlow: Flow
 
     /// Creates an application snapshot.
+    ///
+    /// - Parameters:
+    ///   - applicationID: Identity of the application that produced the snapshot.
+    ///   - displayName: Human-readable application name.
+    ///   - currentFlow: Flow currently being presented.
     public init(applicationID: ApplicationID, displayName: String, currentFlow: Flow) {
         self.applicationID = applicationID
         self.displayName = displayName
@@ -224,11 +269,16 @@ public struct UILessRuntime<Application: UILessApplication>: Sendable {
     public var application: Application
 
     /// Creates a runtime for an application.
+    ///
+    /// - Parameter application: Application definition to run.
     public init(application: Application) {
         self.application = application
     }
 
     /// Starts the application and returns the first renderable snapshot.
+    ///
+    /// - Returns: The first platform-independent snapshot.
+    /// - Throws: Any error thrown while creating the application's initial flow.
     public func start() async throws -> ApplicationSnapshot {
         ApplicationSnapshot(
             applicationID: application.id,

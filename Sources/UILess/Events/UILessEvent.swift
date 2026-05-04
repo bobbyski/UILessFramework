@@ -24,6 +24,15 @@ public struct UILessEvent: Codable, Equatable, Identifiable, Sendable {
     public var metadata: [String: String]
 
     /// Creates a UILess event.
+    ///
+    /// - Parameters:
+    ///   - id: Stable identity for the event.
+    ///   - timestamp: Time when the event was created or received.
+    ///   - source: Platform adapter that produced the event.
+    ///   - type: Semantic event type.
+    ///   - target: Platform-independent target for the event.
+    ///   - payload: Typed event data.
+    ///   - metadata: Additional low-volume event metadata.
     public init(
         id: EventID = EventID(),
         timestamp: Date = Date(),
@@ -106,6 +115,11 @@ public struct KeyboardEvent: Codable, Equatable, Sendable {
     public var phase: InputPhase
 
     /// Creates a keyboard event.
+    ///
+    /// - Parameters:
+    ///   - key: Key name or character in platform-normalized form.
+    ///   - modifiers: Keyboard modifiers active for the event.
+    ///   - phase: Input phase for the key event.
     public init(key: String, modifiers: EventModifiers = [], phase: InputPhase = .pressed) {
         self.key = key
         self.modifiers = modifiers
@@ -128,6 +142,12 @@ public struct PointerEvent: Codable, Equatable, Sendable {
     public var phase: InputPhase
 
     /// Creates a pointer event.
+    ///
+    /// - Parameters:
+    ///   - location: Location in the platform adapter's current coordinate space.
+    ///   - button: Pointer button associated with the event, when any.
+    ///   - modifiers: Modifiers active during the pointer event.
+    ///   - phase: Input phase for the pointer event.
     public init(
         location: EventPoint,
         button: PointerButton? = nil,
@@ -147,6 +167,8 @@ public struct FocusEvent: Codable, Equatable, Sendable {
     public var focused: Bool
 
     /// Creates a focus event.
+    ///
+    /// - Parameter focused: Whether the target gained focus.
     public init(focused: Bool) {
         self.focused = focused
     }
@@ -158,6 +180,8 @@ public struct CommandEvent: Codable, Equatable, Sendable {
     public var command: String
 
     /// Creates a command event.
+    ///
+    /// - Parameter command: Stable command name.
     public init(command: String) {
         self.command = command
     }
@@ -169,6 +193,8 @@ public struct ValueChangedEvent: Codable, Equatable, Sendable {
     public var value: EventValue
 
     /// Creates a value change event.
+    ///
+    /// - Parameter value: New platform-independent value.
     public init(value: EventValue) {
         self.value = value
     }
@@ -180,6 +206,8 @@ public struct SelectionChangedEvent: Codable, Equatable, Sendable {
     public var selectedIDs: [String]
 
     /// Creates a selection change event.
+    ///
+    /// - Parameter selectedIDs: Stable selected item identifiers.
     public init(selectedIDs: [String]) {
         self.selectedIDs = selectedIDs
     }
@@ -191,6 +219,8 @@ public struct NavigationEvent: Codable, Equatable, Sendable {
     public var destination: StepID
 
     /// Creates a navigation event.
+    ///
+    /// - Parameter destination: Destination step.
     public init(destination: StepID) {
         self.destination = destination
     }
@@ -205,6 +235,10 @@ public struct EventPoint: Codable, Equatable, Sendable {
     public var y: Int
 
     /// Creates an event point.
+    ///
+    /// - Parameters:
+    ///   - x: Horizontal coordinate.
+    ///   - y: Vertical coordinate.
     public init(x: Int, y: Int) {
         self.x = x
         self.y = y
@@ -274,6 +308,8 @@ public struct EventModifiers: OptionSet, Codable, Equatable, Sendable {
     public let rawValue: Int
 
     /// Creates a modifier set from its raw bitset.
+    ///
+    /// - Parameter rawValue: Raw bitset value for the modifiers.
     public init(rawValue: Int) {
         self.rawValue = rawValue
     }

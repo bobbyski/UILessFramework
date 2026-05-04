@@ -10,15 +10,26 @@ public protocol PlatformEventBridge: Sendable {
     var platformID: PlatformID { get }
 
     /// Converts one native platform event into zero or more UILess events.
+    ///
+    /// - Parameter nativeEvent: Platform-specific event to translate.
+    /// - Returns: Zero or more platform-independent events.
+    /// - Throws: `EventBridgeError` or another bridge-specific error.
     func decode(_ nativeEvent: NativeEvent) async throws -> [UILessEvent]
 
     /// Converts a UILess event into zero or more native platform events.
+    ///
+    /// - Parameter event: Platform-independent event to translate.
+    /// - Returns: Zero or more platform-specific events.
+    /// - Throws: `EventBridgeError` or another bridge-specific error.
     func encode(_ event: UILessEvent) async throws -> [NativeEvent]
 }
 
 /// Receives core UILess events from a platform event source.
 public protocol PlatformEventSink: Sendable {
     /// Receives one platform-independent event.
+    ///
+    /// - Parameter event: Event received from a platform source.
+    /// - Throws: Any error produced while handling the event.
     func receive(_ event: UILessEvent) async throws
 }
 
@@ -34,6 +45,9 @@ public protocol PlatformEventSource: Sendable {
     var eventBridge: Bridge { get }
 
     /// Starts forwarding native platform events to a UILess event sink.
+    ///
+    /// - Parameter sink: Receiver for decoded UILess events.
+    /// - Throws: Any error produced while connecting or forwarding events.
     func startForwardingEvents(to sink: any PlatformEventSink) async throws
 }
 
