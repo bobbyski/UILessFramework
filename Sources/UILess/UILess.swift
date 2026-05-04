@@ -97,7 +97,7 @@ public struct ResourceID: Hashable, Codable, ExpressibleByStringLiteral, UILessO
 }
 
 /// A platform-independent description of user progression through work.
-public struct Flow: Codable, Equatable, UILessObject {
+public struct Flow: Codable, Equatable, Validatable {
     /// Stable identity for the flow.
     public var id: FlowID
 
@@ -117,6 +117,59 @@ public struct Flow: Codable, Equatable, UILessObject {
         self.id = id
         self.title = title
         self.steps = steps
+    }
+
+    /// Validates the flow.
+    ///
+    /// - Parameter mode: Validation mode to apply.
+    /// - Returns: Validation issues found in this flow.
+    public func validate(mode: ValidationMode) -> [ValidationIssue] {
+        guard mode != .off else {
+            return []
+        }
+
+        var issues: [ValidationIssue] = []
+
+        if title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            issues.append(
+                ValidationIssue(
+                    severity: mode == .strict ? .error : .warning,
+                    ruleID: "flow.title.empty",
+                    message: "Flow title is empty.",
+                    target: .flow(id)
+                )
+            )
+        }
+
+        if steps.isEmpty {
+            issues.append(
+                ValidationIssue(
+                    severity: mode == .strict ? .error : .warning,
+                    ruleID: "flow.steps.empty",
+                    message: "Flow has no steps. It will be treated as immediately complete.",
+                    target: .flow(id)
+                )
+            )
+        }
+
+        if mode == .strict || mode == .light {
+            let stepIDs = Set(steps.map(\.id))
+
+            for step in steps {
+                for transition in step.transitions where !stepIDs.contains(transition.destination) {
+                    issues.append(
+                        ValidationIssue(
+                            severity: .error,
+                            ruleID: "flow.transition.destination.missing",
+                            message: "Transition '\(transition.title)' points to missing step '\(transition.destination.rawValue)'.",
+                            target: .step(step.id)
+                        )
+                    )
+                }
+            }
+        }
+
+        return issues
     }
 }
 

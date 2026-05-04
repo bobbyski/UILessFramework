@@ -67,6 +67,8 @@ clearer.
 ## Design Principles
 
 - [ ] Keep application logic platform-independent by default.
+- [ ] Keep the public authoring interface easy to use, with as little
+      boilerplate as possible.
 - [ ] Prefer protocol-defined capabilities and reference them through protocols
       wherever there may be multiple implementations.
 - [ ] Keep concrete classes, structs, actors, and platform adapters independent
@@ -98,11 +100,12 @@ clearer.
 - [x] Define initial logging framework.
 - [x] Define initial platform-independent event framework.
 - [x] Define initial dependency injection and startup framework.
+- [x] Define initial validation framework.
 - [ ] Refine terminology against the research documents.
 - [ ] Decide what belongs in the core versus future adapter frameworks.
 - [ ] Define the event model for user intent and system-driven changes.
 - [ ] Define state storage and mutation rules.
-- [ ] Define validation and error reporting primitives.
+- [x] Define validation and error reporting primitives.
 - [ ] Define serialization format guarantees for flows and snapshots.
 
 ## Platform Independence Checklist
