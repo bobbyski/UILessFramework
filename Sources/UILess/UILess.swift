@@ -263,8 +263,17 @@ public struct ApplicationSnapshot: Codable, Equatable, Sendable {
     }
 }
 
+/// Runtime capability that can start a UILess application.
+public protocol UILessRuntimeProtocol: Sendable {
+    /// Starts the application and returns the first renderable snapshot.
+    ///
+    /// - Returns: The first platform-independent snapshot.
+    /// - Throws: Any error thrown while creating the application's initial flow.
+    func start() async throws -> ApplicationSnapshot
+}
+
 /// Minimal runtime coordinator for a UILess application.
-public struct UILessRuntime<Application: UILessApplication>: Sendable {
+public struct UILessRuntime<Application: UILessApplication>: UILessRuntimeProtocol {
     /// The application definition being run.
     public var application: Application
 

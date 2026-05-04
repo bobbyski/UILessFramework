@@ -67,6 +67,10 @@ clearer.
 ## Design Principles
 
 - [ ] Keep application logic platform-independent by default.
+- [ ] Prefer protocol-defined capabilities and reference them through protocols
+      wherever there may be multiple implementations.
+- [ ] Keep concrete classes, structs, actors, and platform adapters independent
+      from one another by depending on protocols at framework boundaries.
 - [ ] Keep the core framework free of AppKit, UIKit, SwiftUI, visionOS, tvOS,
       Windows, and Linux UI dependencies.
 - [ ] Put platform-specific idioms behind supporting frameworks.
